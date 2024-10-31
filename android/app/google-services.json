@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37275460253",
+    "project_id": "gebeyia",
+    "storage_bucket": "gebeyia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37275460253:android:273097efacb4ae083c2a74",
+        "android_client_info": {
+          "package_name": "com.example.gebeya"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrvff-UFu9iz1AZbS-Qvb1KuzSEM6rrSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
