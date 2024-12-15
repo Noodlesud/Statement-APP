@@ -8,25 +8,33 @@ import 'package:teyake/pages/signin.dart';
 import 'package:teyake/pages/signup.dart';
 
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  bool isDarkMode =
+      prefs.getBool('isDarkMode') ?? false; // Get dark mode preference
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Get.put(Repo());
-  runApp(const MyApp());
+
+  // Pass the theme preference to MyApp constructor
+  runApp(MyApp(isDarkMode));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isDarkMode;
+
+  MyApp(this.isDarkMode);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Q & A',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: SignIn(),
     );
   }
