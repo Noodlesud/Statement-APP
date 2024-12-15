@@ -4,7 +4,7 @@ import 'package:teyake/pages/display.dart';
 import 'package:teyake/pages/save.dart';
 import 'package:teyake/pages/side_bar.dart';
 import 'package:get/get.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,8 +20,24 @@ class _AddItemPageState extends State<AddItem> {
   final _questionController = TextEditingController();
   final _db = FirebaseFirestore.instance;
   var questionid = const Uuid().v4();
+  // Track theme mode
+
   Map<String, dynamic> retrievedData = SaveData.retrieveUserData();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isDarkMode = false;
+  _loadThemePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDarkMode =
+          prefs.getBool('isDarkMode') ?? false; // Default to false if not set
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThemePreference();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +45,21 @@ class _AddItemPageState extends State<AddItem> {
       child: Scaffold(
           key: _scaffoldKey, // Assign the key to the Scaffold
 
-          backgroundColor: Colors.white,
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
           appBar: AppBar(
-            title: const Text('Enter Your Entries'),
-            backgroundColor: Colors.white24,
+            title: Text(
+              'Enter Your Entries',
+              style: TextStyle(
+                color: isDarkMode
+                    ? Colors.white
+                    : Colors.black, // Change text color based on theme
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
             leading: IconButton(
+              color: isDarkMode ? Colors.white : Colors.black,
               icon: const Icon(Icons.menu),
               onPressed: () {
                 // Open the sidebar using the GlobalKey
@@ -129,7 +155,10 @@ class _AddItemPageState extends State<AddItem> {
   Widget _buildquestionField() {
     return TextFormField(
       controller: _questionController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+        fontSize: 16.0,
+        color: isDarkMode ? Colors.white : Colors.black,
+      ),
       decoration: InputDecoration(
         labelText: 'Entry',
         hintText: 'Enter your Entry',
