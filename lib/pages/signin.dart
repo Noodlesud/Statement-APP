@@ -7,6 +7,7 @@ import 'package:teyake/pages/repo.dart';
 import 'package:teyake/pages/save.dart';
 import 'package:teyake/pages/signup.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -20,15 +21,30 @@ class _SignInState extends State<SignIn> {
   final _passwordController = TextEditingController();
   final _emailController = TextEditingController();
   final controller = Get.put(Repo());
+  bool isDarkMode = false;
+  _loadThemePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDarkMode =
+          prefs.getBool('isDarkMode') ?? false; // Default to false if not set
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThemePreference();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
         appBar: AppBar(
           title: const Text('', style: TextStyle(fontSize: 29)),
 
-          backgroundColor: Colors.white24,
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
           centerTitle: true, // Set this to true to center the title
           elevation: 0, // Set elevation to 0 to remove the shadow
           toolbarHeight: 120, // Adjust the toolbar height as needed
@@ -41,16 +57,20 @@ class _SignInState extends State<SignIn> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Welcome Back',
-                    style: TextStyle(fontSize: 30.0),
+                    style: TextStyle(
+                        fontSize: 32.0,
+                        color: isDarkMode ? Colors.white : Colors.black),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text(
+                  Text(
                     'Sign-In to Your Account',
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(
+                        fontSize: 22.0,
+                        color: isDarkMode ? Colors.white : Colors.black),
                   ),
                   const SizedBox(
                     height: 15,
@@ -76,16 +96,18 @@ class _SignInState extends State<SignIn> {
                       ),
                       child: const Text(
                         'Sign In',
-                        style: TextStyle(fontSize: 16.0),
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
                       ),
                     ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: "Do not have an Account?",
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
+                        fontSize: 17,
                       ),
                       children: [
                         TextSpan(
@@ -150,9 +172,11 @@ class _SignInState extends State<SignIn> {
   Widget _buildemailField() {
     return TextFormField(
       controller: _emailController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+          fontSize: 16.0, color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
         labelText: 'Email',
+        labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
         hintText: 'Enter your Email',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
@@ -178,9 +202,11 @@ class _SignInState extends State<SignIn> {
   Widget _buildpasswordField() {
     return TextFormField(
       controller: _passwordController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+          fontSize: 16.0, color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
         labelText: 'Password',
+        labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
         hintText: 'Enter your Password',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
