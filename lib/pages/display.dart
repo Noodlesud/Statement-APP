@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teyake/pages/side_bar.dart';
 import 'package:get/get.dart';
 import 'package:teyake/colors.dart';
@@ -32,6 +33,17 @@ class _DisplayState extends State<Display> {
   bool showComments = false;
   bool isKeyboardVisible = false;
   int selectedQuestionIndex = -1;
+  bool isDarkMode = false;
+
+  // Load the theme preference from SharedPreferences
+  _loadThemePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDarkMode =
+          prefs.getBool('isDarkMode') ?? false; // Default to false if not set
+    });
+  }
+
   Future<void> _refreshData() async {
     setState(() {});
   }
@@ -45,6 +57,8 @@ class _DisplayState extends State<Display> {
   @override
   void initState() {
     super.initState();
+    _loadThemePreference();
+
     _commentControllers = List.generate(
       100,
       (index) => TextEditingController(),
@@ -63,23 +77,36 @@ class _DisplayState extends State<Display> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.grey,
+      backgroundColor: isDarkMode ? Colors.black : Colors.grey,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "Entries",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 26.0), // Adjust the font size as needed
+          style: TextStyle(
+              color: isDarkMode ? Colors.white : Colors.black,
+              fontSize: 26.0), // Adjust the font size as needed
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: isDarkMode ? Colors.black : Colors.transparent,
         centerTitle: true, // Set this to true for center alignment
         actions: [
           IconButton(
-            icon: const Icon(Icons.replay),
+            icon: Icon(
+              Icons.replay,
+              color: isDarkMode ? Colors.white : Colors.black,
+            ),
             onPressed: () {
               _refreshDataquestion();
             },
           ),
         ],
+        leading: IconButton(
+          color: isDarkMode ? Colors.white : Colors.black,
+          icon: const Icon(Icons.menu),
+          onPressed: () {
+            // Open the sidebar using the GlobalKey
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
       ),
       drawer: Sidebar(),
       body: SingleChildScrollView(
@@ -123,7 +150,7 @@ class _DisplayState extends State<Display> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            color: Colors.white,
+                            color: isDarkMode ? Colors.grey : Colors.white,
                             child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
