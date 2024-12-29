@@ -2,7 +2,7 @@ Flutter Firebase Opinion/Question App
 Project Description
 This Flutter mobile application provides a platform for users to post their opinions or questions and engage with others through comments and likes. The app integrates Firebase as the backend to manage authentication, storage, and real-time data. Users can:
 Sign up or log in to access the app.
-View a feed of all posted statements.
+View a feed of all posted statement.
 Post their own statements.
 Comment on and like other users' posts.
 Delete their own statements and comments.
