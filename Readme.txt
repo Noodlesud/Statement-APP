@@ -18,9 +18,9 @@ Prerequisites
 * Android or iOS emulator, or a physical device.
 Steps to Build and Run
 1. Clone this repository:
-git clone https://github.com/your-repo/flutter-firebase-opinion-app.git
+git clone https://github.com/Noodlesud/Statement-APP.git
 2. Navigate to the project directory:
-cd flutter-firebase-opinion-app
+cd Statement_app
 3. Install dependencies:
 flutter pub get
 4. Run the app on an emulator or device:
