@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:teyake/colors.dart';
 import 'package:teyake/dimensions.dart';
 import 'package:teyake/pages/display.dart';
@@ -31,17 +32,31 @@ class _signupState extends State<SignUp> {
   final _db = FirebaseFirestore.instance;
   final picker = ImagePicker();
   Map<String, dynamic> retrievedData = SaveData.retrieveUserData();
+  bool isDarkMode = false;
+  _loadThemePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isDarkMode =
+          prefs.getBool('isDarkMode') ?? false; // Default to false if not set
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadThemePreference();
+  }
 
   File? _image;
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
         appBar: AppBar(
           title: const Text('', style: TextStyle(fontSize: 29)),
 
-          backgroundColor: Colors.white24,
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
           centerTitle: true, // Set this to true to center the title
           elevation: 0, // Set elevation to 0 to remove the shadow
           toolbarHeight: 120, // Adjust the toolbar height as needed
@@ -54,16 +69,20 @@ class _signupState extends State<SignUp> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Welcome',
-                    style: TextStyle(fontSize: 30.0),
+                    style: TextStyle(
+                        fontSize: 30.0,
+                        color: isDarkMode ? Colors.white : Colors.black),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text(
+                  Text(
                     'Create Your Account',
-                    style: TextStyle(fontSize: 20.0),
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: isDarkMode ? Colors.white : Colors.black),
                   ),
                   const SizedBox(
                     height: 15,
@@ -72,21 +91,27 @@ class _signupState extends State<SignUp> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Profile Picture',
-                      ),
                       GestureDetector(
                         onTap: () {
                           _pickImage();
                         },
-                        child: const Icon(
+                        child: Icon(
                           Icons.add_a_photo,
-                          color: Colors.black54,
-                          size: 30,
+                          color: isDarkMode ? Colors.white : Colors.black,
+                          size: 40,
                         ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Profile Picture',
+                        style: TextStyle(
+                            fontSize: 15.0,
+                            color: isDarkMode ? Colors.white : Colors.black),
                       ),
                     ],
                   ),
@@ -131,8 +156,8 @@ class _signupState extends State<SignUp> {
                   RichText(
                     text: TextSpan(
                       text: "Already have an account?",
-                      style: const TextStyle(
-                        color: Colors.black,
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black,
                         fontSize: 16,
                       ),
                       children: [
@@ -281,9 +306,11 @@ class _signupState extends State<SignUp> {
   Widget _buildnameField() {
     return TextFormField(
       controller: _nameController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+          fontSize: 16.0, color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
         labelText: 'Name',
+        labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
         hintText: 'Enter your Name',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
@@ -309,9 +336,11 @@ class _signupState extends State<SignUp> {
   Widget _buildemailField() {
     return TextFormField(
       controller: _emailController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+          fontSize: 16.0, color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
         labelText: 'Email',
+        labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
         hintText: 'Enter your Email',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
@@ -337,9 +366,11 @@ class _signupState extends State<SignUp> {
   Widget _buildphoneField() {
     return TextFormField(
       controller: _phoneController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+          fontSize: 16.0, color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
         labelText: 'Phone Number',
+        labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
         hintText: 'Enter your Phone Number',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
@@ -365,9 +396,11 @@ class _signupState extends State<SignUp> {
   Widget _buildpasswordField() {
     return TextFormField(
       controller: _passwordController,
-      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+      style: TextStyle(
+          fontSize: 16.0, color: isDarkMode ? Colors.white : Colors.black),
       decoration: InputDecoration(
         labelText: 'Password',
+        labelStyle: TextStyle(color: isDarkMode ? Colors.white : Colors.black),
         hintText: 'Enter your Password',
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
