@@ -54,11 +54,11 @@ Steps to Build and Run
 
 Clone this repository:
 
-git clone https://github.com/your-repo/flutter-firebase-opinion-app.git
+git clone https://github.com/Noodlesud/Statement-APP.git
 
 Navigate to the project directory:
 
-cd flutter-firebase-opinion-app
+cd statement_app
 
 Install dependencies:
 
