@@ -110,5 +110,4 @@ Firestore Database for real-time storage of posts, comments, and user data.
 
 Firebase Storage for handling profile pictures and media (if implemented).
 
-This README provides a comprehensive overview of the Flutter Firebase Opinion/Question App, its functionality, and how to build and run it locally.
 
